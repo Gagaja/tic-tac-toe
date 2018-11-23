@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css?family=Kalam:400,700&amp;subset=latin-ext" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Kalam:400,700&amp;subset=latin-ext" rel="stylesheet">
+
+</head>
+
+<body >
+    <header >
+        <div class="txt container-fluid">
+    <h1 class="main-title">Tic Tac Toe</h1>
+    <p class="paragraf">Tic-tac-toe (also known as noughts and crosses or Xs and Os) is a paper-and-pencil game for two players. <br> X and O, who
+        take turns marking the spaces in a 3×3 grid. <br>
+         The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row wins the game.</p>
+        </div>
+    </header>
+    <div class="page-content container-fluid" onload="startGame()">
+        <div id="messages">Messages of the game</div>
+
+
+        <div class="table-section table-flex ">
+            <table class="table-table">
+                <tr>
+                    <td class="field" id="a1"></td>
+                    <td class="field" id="a2"></td>
+                    <td class="field" id="a3"></td>
+                </tr>
+                <tr>
+                    <td class="field" id="a4"></td>
+                    <td class="field" id="a5"></td>
+                    <td class="field" id="a6"></td>
+                </tr>
+                <tr>
+                    <td class="field" id="a7"></td>
+                    <td class="field" id="a8"></td>
+                    <td class="field" id="a9"></td>
+                </tr>
+
+            </table>
+            
+            <button id="btn" class="but">Play again</button>
+        </div>
+        
+        
+
+    </div>
+
+    <script>
+        var turn = 'X';
+        var winer = "";
+
+        document.getElementById("btn").addEventListener("click", startGame);
+        document.querySelector("table").addEventListener("click", nextMove);
+
+        function startGame() {
+            for (var i = 1; i <= 9; i++) {
+                deleteAll(i);
+            }
+            messageOfTheGame(turn + ' first play');
+        }
+
+        function nextMove(event) {
+            if (event.target !== event.currentTarget) {
+                var fields = event.target;
+                if (winer != "") {
+                    messageOfTheGame(turn + " is already win")
+                } else if (fields.innerText == '') {
+                    fields.innerText = turn;
+                    changeCharacter();
+                } else {
+                    messageOfTheGame('Choose another field');
+                }
+            }
+        }
+
+        function changeCharacter() {
+            if (chechWhoWon(turn)) {
+                messageOfTheGame("Congratulations " + turn + " is win!!!")
+                winer = turn;
+            } else {
+                turn = turn == 'X' ? 'O' : 'X';
+                messageOfTheGame('Next player play ' + turn);
+            }
+        }
+
+        function messageOfTheGame(msg) {
+            document.getElementById("messages").innerHTML = msg;
+        }
+        function rowCheck(a, b, c, move) {
+            var result = false;
+            if (inField(a) == move && inField(b) == move && inField(c) == move) {
+                result = true;
+            }
+            return result;
+
+        }
+        function inField(number) {
+            return document.getElementById("a" + number).innerText;
+        }
+
+        function chechWhoWon(move) {
+            var result = false;
+            if (rowCheck(1, 2, 3, move) ||
+                rowCheck(4, 5, 6, move) ||
+                rowCheck(7, 8, 9, move) ||
+                rowCheck(1, 4, 7, move) ||
+                rowCheck(2, 5, 8, move) ||
+                rowCheck(3, 6, 9, move) ||
+                rowCheck(1, 5, 9, move) ||
+                rowCheck(3, 5, 7, move)) {
+                result = true;
+            }
+            return result;
+        }
+        function deleteAll(number) {
+            document.getElementById("a" + number).innerText = "";
+        }
+    </script>
+
+
+</body>
+
+</html>
